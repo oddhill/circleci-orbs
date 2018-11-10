@@ -9,9 +9,25 @@ jobs:
       - run:
           name: Linting orbs
           command: yamllint ./orbs
+  validate:
+    docker:
+      - image: circleci/circleci-cli:0.1.2709
+    steps:
+      - checkout
+      - run:
+          name: Setting up CircleCI CLI
+          command: "echo -e \"token: placeholder\nverbose: false > ~/.circleci/cli.yml\""
+      - run:
+          name: Validating orbs
+          command: |
+            for ORB in orbs/*; do
+              echo "Validating $ORB ..."
+              circleci orb validate $ORB
+            done
 
 workflows:
   version: 2
   main:
     jobs:
       - lint
+      - validate
