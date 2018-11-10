@@ -6,7 +6,9 @@ jobs:
       - image: singapore/lint-condo
     steps:
       - checkout
-      - run: yamllint ./orbs
+      - run:
+          name: Linting orbs
+          command: yamllint ./orbs
 
 workflows:
   version: 2
