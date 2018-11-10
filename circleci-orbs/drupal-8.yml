@@ -1,0 +1,48 @@
+##
+# Drupal 8
+#
+# Check https://circleci.com/docs/2.0/orb-intro for more details about orbs.
+##
+
+version: 2.1
+description: Drupal 8 commands
+
+commands:
+  drush:
+    description: Runs common Drush commands for the specified alias
+    parameters:
+      alias:
+        description: The alias to run Drush commands for
+        type: string
+    steps:
+      - run: ./vendor/bin/drush << parameters.alias >> cache-rebuild
+      - run: ./vendor/bin/drush << parameters.alias >> updatedb -y
+      - run: ./vendor/bin/drush << parameters.alias >> config-import -y
+      - run: ./vendor/bin/drush << parameters.alias >> cache-rebuild
+
+  phpcs:
+    description: Runs PHP code sniffer for custom code
+    parameters:
+      extensions:
+        description: Extensions to run the sniffs on
+        type: string
+        default: php,module,theme
+      ignore:
+        description: Files and folders to ignore
+        type: string
+        default: 'node_modules,build'
+      paths:
+        description: Paths to sniff
+        type: string
+        default: 'public/modules/custom'
+      standard:
+        description: The code standard to use when sniffing
+        type: string
+        default: './vendor/drupal/coder/coder_sniffer/Drupal/ruleset.xml'
+    steps:
+      - run: mkdir -p ~/phpcs
+      - run: vendor/bin/phpcs --standard=<< parameters.standard >> --extensions=<< parameters.extensions >> --ignore=<< parameters.ignore >> --report-junit=~/phpcs/junit.xml << parameters.paths >>
+      - store_test_results:
+          path: ~/phpcs
+      - store_artifacts:
+          path: ~/phpcs

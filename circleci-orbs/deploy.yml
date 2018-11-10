@@ -1,0 +1,29 @@
+##
+# Deployment
+#
+# Check https://circleci.com/docs/2.0/orb-intro for more details about orbs.
+##
+
+version: 2.1
+description: Deployment commands
+
+commands:
+  deploy:
+    description: 'Deploy code with SSH'
+    parameters:
+      hostname:
+        type: string
+      path:
+        type: string
+      user:
+        type: string
+    steps:
+      - add_ssh_keys
+      - run:
+          name: Preparing for deployment
+          command: |
+            ssh-keyscan -H << parameters.hostname >> >> ~/.ssh/known_hosts
+            sudo apt install rsync
+      - run:
+          name: Deploying files
+          command: rsync -az --force --delete --exclude-from=.rsyncignore -e 'ssh' ./ << parameters.user >>@<< parameters.hostname >>:<< parameters.path >>
