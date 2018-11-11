@@ -58,7 +58,7 @@ commands:
           name: 'Running PHP CodeSniffer'
           command: |
             mkdir -p ~/phpcs
-            vendor/bin/phpcs --standard=<< parameters.standard >> --extensions=<< parameters.extensions >> --ignore=<< parameters.ignore >> --report-junit=~/phpcs/junit.xml << parameters.paths >>
+            vendor/bin/phpcs --standard=<< parameters.standard >> --extensions=<< parameters.extensions >> --ignore=<< parameters.ignore >> --report-junit=$HOME/phpcs/junit.xml << parameters.paths >>
       - store_test_results:
           path: ~/phpcs
       - store_artifacts:
