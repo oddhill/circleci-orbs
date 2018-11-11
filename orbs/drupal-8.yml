@@ -15,10 +15,10 @@ commands:
         description: The alias to use when running the Drush commands.
         type: string
     steps:
-      - run: ./vendor/bin/drush << parameters.alias >> cache-rebuild
-      - run: ./vendor/bin/drush << parameters.alias >> updatedb -y
-      - run: ./vendor/bin/drush << parameters.alias >> config-import -y
-      - run: ./vendor/bin/drush << parameters.alias >> cache-rebuild
+      - run: ./vendor/bin/drush @<< parameters.alias >> cache-rebuild
+      - run: ./vendor/bin/drush @<< parameters.alias >> updatedb -y
+      - run: ./vendor/bin/drush @<< parameters.alias >> config-import -y
+      - run: ./vendor/bin/drush @<< parameters.alias >> cache-rebuild
 
   phpcs:
     description: |
