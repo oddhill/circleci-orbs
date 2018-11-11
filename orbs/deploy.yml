@@ -5,17 +5,38 @@
 ##
 
 version: 2.1
-description: Deployment commands
+description: General purpose functionality for deployments.
 
 commands:
-  deploy:
-    description: 'Deploy code with SSH'
+  ssh:
+    description: |
+      Deploys code with SSH and rsync. Allows some files and folders on the
+      remote to be ignored as to not overwrite important files and folders
+      like configuration and uploads. The ignore file must exist and is
+      not an optional file, the name of the file may be changed
+      through the ignore-file parameter.
     parameters:
       hostname:
+        description: The hostname of the server to connect to with SSH.
         type: string
-      path:
+      ignore-file:
+        description: |
+          The file to use for excluding/ignoring files and folders when syncing
+          to the remote server. This file is not optional and must exist.
+        type: string
+        default: .rsyncignore
+      local-path:
+        description: |
+          The local path of the content to sync to the remote, defaults to the
+          current directory.
+        type: string
+        default: ./
+      remote-path:
+        description: |
+          The remote path to the location of where the files should be syncted to.
         type: string
       user:
+        description: The username of the SSH user.
         type: string
     steps:
       - add_ssh_keys
@@ -26,4 +47,9 @@ commands:
             sudo apt install rsync
       - run:
           name: Deploying files
-          command: rsync -az --force --delete --exclude-from=.rsyncignore -e 'ssh' ./ << parameters.user >>@<< parameters.hostname >>:<< parameters.path >>
+          command: |
+            rsync -az \
+            --force \
+            --delete \
+            --exclude-from=<< parameters.ignore-file >> \
+            -e 'ssh' << parameters.local-path >> << parameters.user >>@<< parameters.hostname >>:<< parameters.remote-path >>
