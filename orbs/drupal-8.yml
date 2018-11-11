@@ -54,8 +54,11 @@ commands:
         type: string
         default: './vendor/drupal/coder/coder_sniffer/Drupal/ruleset.xml'
     steps:
-      - run: mkdir -p ~/phpcs
-      - run: vendor/bin/phpcs --standard=<< parameters.standard >> --extensions=<< parameters.extensions >> --ignore=<< parameters.ignore >> --report-junit=~/phpcs/junit.xml << parameters.paths >>
+      - run:
+          name: 'Running PHP CodeSniffer'
+          command: |
+            mkdir -p ~/phpcs
+            vendor/bin/phpcs --standard=<< parameters.standard >> --extensions=<< parameters.extensions >> --ignore=<< parameters.ignore >> --report-junit=~/phpcs/junit.xml << parameters.paths >>
       - store_test_results:
           path: ~/phpcs
       - store_artifacts:
