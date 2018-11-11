@@ -38,9 +38,9 @@ commands:
         default: php,module,theme
       ignore:
         description: |
-        Files and folders to ignore when running the sniffs, thedefault will
-        ignore common folders that may exist in a theme or module that is
-        not custom code like build files and node modules.
+          Files and folders to ignore when running the sniffs, the default will
+          ignore common folders that may exist in a theme or module that is
+          not custom code like build files and node modules.
         type: string
         default: 'node_modules,build'
       paths:
