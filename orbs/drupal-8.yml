@@ -8,11 +8,11 @@ version: 2.1
 description: Drupal 8 commands
 
 commands:
-  drush:
-    description: Runs common Drush commands for the specified alias
+  drush-post-deploy:
+    description: Runs common post-deploy commands for the specified alias.
     parameters:
       alias:
-        description: The alias to run Drush commands for
+        description: The alias to use when running the Drush commands.
         type: string
     steps:
       - run: ./vendor/bin/drush << parameters.alias >> cache-rebuild
