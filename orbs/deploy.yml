@@ -31,6 +31,10 @@ commands:
           current directory.
         type: string
         default: ./
+      port:
+        description: The port to access SSH on the remote machine.
+        type: integer
+        default: 22
       remote-path:
         description: |
           The remote path to the location of where the files should be syncted to.
@@ -52,4 +56,4 @@ commands:
             --force \
             --delete \
             --exclude-from=<< parameters.ignore-file >> \
-            -e 'ssh' << parameters.local-path >> << parameters.user >>@<< parameters.hostname >>:<< parameters.remote-path >>
+            -e 'ssh -p << parameters.port >>' << parameters.local-path >> << parameters.user >>@<< parameters.hostname >>:<< parameters.remote-path >>
