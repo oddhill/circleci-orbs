@@ -52,8 +52,8 @@ commands:
       - run:
           name: Preparing for deployment
           command: |
+            sudo apt update && sudo apt install openssh-client rsync
             ssh-keyscan -p << parameters.port >> -H << parameters.hostname >> >> ~/.ssh/known_hosts
-            sudo apt install rsync
       - run:
           name: Deploying files
           command: |
