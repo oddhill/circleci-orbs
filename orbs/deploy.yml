@@ -7,6 +7,11 @@
 version: 2.1
 description: General purpose functionality for deployments.
 
+executors:
+  default:
+    docker:
+      - image: cimg/base:stable
+
 commands:
   ssh:
     description: |
